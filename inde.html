@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>✨ Balanced Diet Adventure ✨</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;600&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary: #ff9a9e; --secondary: #fad0c4; --accent: #a18cd1; --text: #5d54a4; --card-bg: #ffffff; --bg-gradient: linear-gradient(120deg, #a18cd1 0%, #fbc2eb 100%); }
+        body { font-family: 'Quicksand', sans-serif; background-image: var(--bg-gradient); min-height: 100vh; margin: 0; padding: 20px; color: var(--text); overflow-x: hidden; }
+        .container { max-width: 800px; margin: 0 auto; background: rgba(255, 255, 255, 0.9); border-radius: 30px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); backdrop-filter: blur(10px); border: 4px solid #fff; position: relative; }
+        header { text-align: center; margin-bottom: 30px; }
+        h1 { font-family: 'Fredoka', sans-serif; color: #ff6b81; font-size: 2.5rem; text-shadow: 2px 2px 0px #ffeaa7; margin-bottom: 10px; }
+        .intro-text { font-size: 1.1rem; line-height: 1.6; color: #6c5ce7; margin-bottom: 20px; }
+        
+        /* Navigation */
+        .nav-tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 30px; flex-wrap: wrap; }
+        .nav-btn { background: rgba(255,255,255,0.5); border: 2px solid white; padding: 10px 15px; border-radius: 50px; font-family: 'Fredoka', sans-serif; font-size: 0.95rem; color: var(--text); cursor: pointer; transition: all 0.3s ease; }
+        .nav-btn:hover { background: rgba(255,255,255,0.8); transform: translateY(-2px); }
+        .nav-btn.active { background: #ff9a9e; color: white; transform: scale(1.05); box-shadow: 0 5px 15px rgba(255, 154, 158, 0.4); border-color: #ff9a9e; }
+
+        /* Checklist */
+        .progress-wrapper { position: relative; margin-bottom: 40px; margin-top: 20px; }
+        .companion-spot { position: absolute; top: -45px; right: 0; font-size: 3rem; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.2)); animation: float 3s ease-in-out infinite; z-index: 10; transition: left 0.5s ease; }
+        @keyframes float { 0% { transform: translateY(0px) rotate(5deg); } 50% { transform: translateY(-10px) rotate(-5deg); } 100% { transform: translateY(0px) rotate(5deg); } }
+        .progress-container { background: #dfe6e9; border-radius: 50px; height: 25px; width: 100%; overflow: hidden; border: 2px solid #fff; box-shadow: inset 0 2px 5px rgba(0,0,0,0.1); }
+        .progress-bar { background: linear-gradient(90deg, #ff9a9e, #fbc2eb); height: 100%; width: 0%; border-radius: 50px; transition: width 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55); position: relative; }
+        .checklist { list-style: none; padding: 0; }
+        .item { background: var(--card-bg); margin-bottom: 15px; padding: 20px; border-radius: 20px; display: flex; align-items: flex-start; gap: 15px; transition: all 0.3s ease; border: 2px solid transparent; cursor: pointer; box-shadow: 0 4px 15px rgba(161, 140, 209, 0.15); }
+        .item:hover { transform: translateY(-5px) scale(1.01); border-color: #ff9a9e; }
+        .item.completed { background: #f0fff4; border-color: #55efc4; opacity: 0.8; }
+        .item.completed h3 { text-decoration: line-through; color: #00b894; }
+        .checkbox-custom { min-width: 30px; height: 30px; border-radius: 50%; border: 3px solid #dfe6e9; display: flex; align-items: center; justify-content: center; background: #fff; margin-top: 5px; }
+        .item.completed .checkbox-custom { background: #55efc4; border-color: #55efc4; }
+        .content h3 { margin: 0 0 5px 0; font-family: 'Fredoka', sans-serif; color: #6c5ce7; }
+        .content p { margin: 0; font-size: 0.95rem; color: #636e72; }
+
+        /* General Views */
+        #game-view, #shop-view, #summary-view, #qa-view { text-align: center; animation: fadeIn 0.5s; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .score-board { background: #fff; display: inline-block; padding: 10px 20px; border-radius: 20px; color: #ff9a9e; font-family: 'Fredoka', sans-serif; font-size: 1.2rem; margin-bottom: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); border: 2px solid #ff9a9e; }
+
+        /* Game */
+        .question-card { background: #fff0f6; padding: 40px; border-radius: 30px; margin-bottom: 30px; border: 3px dashed #a18cd1; }
+        .question-card h3 { font-family: 'Fredoka', sans-serif; color: #a18cd1; font-size: 1.4rem; margin-bottom: 10px; }
+        .question-text { font-size: 1.2rem; font-weight: 600; color: #5d54a4; }
+        .options-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+        .option-btn { background: white; border: 2px solid #dfe6e9; padding: 15px; border-radius: 15px; font-family: 'Quicksand', sans-serif; font-weight: 600; font-size: 1rem; color: #636e72; cursor: pointer; transition: all 0.2s; }
+        .option-btn:hover { transform: translateY(-2px); background: #fdf2f8; border-color: #ff9a9e; color: #ff9a9e; }
+        .shake { animation: shake 0.5s; border-color: #ff7675 !important; background: #fff0f0 !important; color: #d63031 !important; }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25%, 75% { transform: translateX(-10px); } 50% { transform: translateX(10px); } }
+
+        /* Shop */
+        .shop-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px; margin-top: 20px; }
+        .shop-item { background: white; padding: 15px; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); border: 2px solid #dfe6e9; transition: transform 0.2s; }
+        .shop-item:hover { transform: translateY(-5px); border-color: #a18cd1; }
+        .shop-icon { font-size: 3rem; margin-bottom: 10px; display: block; }
+        .btn-buy { background: #ff9a9e; color: white; border: none; padding: 8px 15px; border-radius: 20px; cursor: pointer; width: 100%; font-family: 'Fredoka', sans-serif; margin-top: 10px; }
+        .btn-equip { background: #a18cd1; color: white; border: none; padding: 8px 15px; border-radius: 20px; cursor: pointer; width: 100%; font-family: 'Fredoka', sans-serif; margin-top: 10px; }
+        .btn-equip.equipped { background: #55efc4; cursor: default; }
+
+        /* Revision & QA */
+        .summary-grid { display: grid; grid-template-columns: 1fr; gap: 25px; text-align: left; margin-top: 20px; }
+        .summary-card { background: #fff; border-radius: 20px; padding: 25px; box-shadow: 0 8px 20px rgba(161, 140, 209, 0.1); border: 2px solid #fff; border-top: 8px solid #ff9a9e; transition: transform 0.3s; }
+        .summary-card:hover { transform: translateY(-5px); }
+        .summary-card h2 { font-family: 'Fredoka', sans-serif; color: #5d54a4; margin-top: 0; }
+        .summary-list li { margin-bottom: 12px; padding-left: 15px; border-left: 3px solid #dfe6e9; list-style: none; }
+        
+        .qa-list { display: flex; flex-direction: column; gap: 15px; text-align: left; margin-top: 20px; }
+        .qa-card { background: white; border-radius: 15px; border: 2px solid #dfe6e9; overflow: hidden; transition: all 0.3s ease; }
+        .qa-header { padding: 20px; background: #fff; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-family: 'Fredoka', sans-serif; color: #5d54a4; }
+        .qa-header:hover { background: #fdf2f8; }
+        .qa-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-in-out; background: #fff; }
+        .qa-content { padding: 20px; border-top: 1px solid #f1f2f6; color: #636e72; }
+        .qa-card.open { border-color: #ff9a9e; box-shadow: 0 8px 20px rgba(255, 154, 158, 0.2); }
+        .qa-card.open .qa-header { background: #fff0f6; color: #ff6b81; }
+
+        /* UI Utils */
+        .btn-reset { background: #ff7675; color: white; padding: 12px 25px; border-radius: 50px; border: none; font-family: 'Fredoka', sans-serif; cursor: pointer; margin-top: 30px; }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 1000; backdrop-filter: blur(5px); }
+        .modal { background: white; padding: 40px; border-radius: 30px; text-align: center; max-width: 400px; border: 5px solid #fdcb6e; }
+        #confetti-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 999; }
+    </style>
+</head>
+<body>
+
+<canvas id="confetti-canvas"></canvas>
+
+<div class="container">
+    <header>
+        <h1>✨ Balanced Diet Adventure ✨</h1>
+        <p class="intro-text">Hello super scientists! 🌸</p>
+        <div class="nav-tabs">
+            <button class="nav-btn active" onclick="switchTab('checklist')" id="tab-checklist">📝 Checklist</button>
+            <button class="nav-btn" onclick="switchTab('game')" id="tab-game">🎮 Game</button>
+            <button class="nav-btn" onclick="switchTab('shop')" id="tab-shop">🛍️ Shop</button>
+            <button class="nav-btn" onclick="switchTab('summary')" id="tab-summary">📚 Revision</button>
+            <button class="nav-btn" onclick="switchTab('qa')" id="tab-qa">❓ Q&A Vault</button>
+        </div>
+    </header>
+
+    <div id="checklist-view">
+        <div class="progress-wrapper">
+            <div id="activeCompanion" class="companion-spot" style="display:none;"></div>
+            <div class="progress-container"><div class="progress-bar" id="progressBar"></div></div>
+        </div>
+        <ul class="checklist" id="checklist"></ul>
+        <div style="text-align:center"><button class="btn-reset" onclick="showResetModal()">🗑️ Reset Adventure</button></div>
+    </div>
+
+    <div id="game-view" style="display: none;">
+        <div class="score-board">💎 Gems: <span id="gameScoreDisplay">0</span></div>
+        <div class="question-card" id="questionCard">
+            <h3>Mystery Definition 📜</h3>
+            <p class="question-text" id="questionText">Loading magic...</p>
+        </div>
+        <div class="options-grid" id="optionsGrid"></div>
+    </div>
+
+    <div id="shop-view" style="display: none;">
+        <div class="score-board">💎 Gems: <span id="shopScoreDisplay">0</span></div>
+        <p>Buy magical companions!</p>
+        <div class="shop-grid" id="shopGrid"></div>
+    </div>
+
+    <div id="summary-view" style="display: none;">
+        <h2>✨ Revision Notes ✨</h2>
+        <div class="summary-grid" id="summaryGrid"></div>
+    </div>
+
+    <div id="qa-view" style="display: none;">
+        <h2>❓ Q&A Vault ❓</h2>
+        <p>Tap a question to reveal the secret answer!</p>
+        <div class="qa-list" id="qaList"></div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="mysteryModal">
+    <div class="modal">
+        <span style="font-size:4rem;display:block;margin-bottom:10px;">🎉</span>
+        <h2 id="modalTitle" style="color:#fdcb6e;margin:0;">Mystery Unlocked!</h2>
+        <p id="modalText" style="color:#636e72;margin:15px 0;">You did it!</p>
+        <button onclick="document.getElementById('mysteryModal').style.display='none'" style="background:#fdcb6e;color:white;padding:10px 20px;border-radius:20px;border:none;cursor:pointer;font-family:'Fredoka',sans-serif;">Keep Going! ✨</button>
+    </div>
+</div>
+
+<div class="modal-overlay" id="resetModal">
+    <div class="modal" style="border-color:#ff7675;">
+        <span style="font-size:4rem;display:block;margin-bottom:10px;">🥺</span>
+        <h2 style="color:#ff7675;margin:0;">Reset Everything?</h2>
+        <p style="color:#636e72;">This will wipe all sparkles and gems!</p>
+        <div style="display:flex;justify-content:center;gap:15px;margin-top:20px;">
+            <button onclick="document.getElementById('resetModal').style.display='none'" style="background:#dfe6e9;color:#636e72;padding:10px 20px;border-radius:20px;border:none;cursor:pointer;">No</button>
+            <button onclick="confirmReset()" style="background:#ff7675;color:white;padding:10px 20px;border-radius:20px;border:none;cursor:pointer;">Yes</button>
+        </div>
+    </div>
+</div>
+
+<script>
+// --- DATA ---
+const topics=[{id:1,title:"Diets",desc:"Nutrients needed for energy, growth, and health.",mystery:"Did you know? 'Diet' just means what you eat, not just losing weight! 🍎"},{id:2,title:"Food labels",desc:"Labels show nutrient amounts and energy values (joules).",mystery:"Super Skill: Reading labels is like decoding a secret message from your food! 🔍"},{id:3,title:"Risk assessments",desc:"Identifying hazards and controlling risks to stay safe.",mystery:"Safety First! Being a scientist means being a safety detective. 🕵️‍♀️"},{id:4,title:"Carbohydrates",desc:"Energy sources! Sugar (sweet) and Starch (pasta/rice).",mystery:"Zoom! ⚡ Carbs are your body's favorite gasoline for running and playing."},{id:5,title:"Fats",desc:"Stored energy and insulation. Butter, cheese, oils.",mystery:"Cozy! Fats act like a fluffy blanket under your skin to keep you warm. 🐻"},{id:6,title:"Proteins",desc:"Builds cells and repairs the body. Meat, fish, beans.",mystery:"Builder Blocks! 🧱 Protein is the Lego of your body, building muscles!"},{id:7,title:"Vitamins and minerals",desc:"Essential small nutrients (Vit A, C, D, Iron).",mystery:"Tiny but Mighty! ✨ You only need a sprinkle, but they keep your eyes and bones shiny."},{id:8,title:"Balanced diets",desc:"Eating a variety of foods to get correct nutrients.",mystery:"Rainbow Power! 🌈 The more colors on your plate, the better the balance."}];
+const revisionData=[{title:"1. Diets 🍎",points:["<strong>Diet:</strong> What you normally eat.","<strong>Nutrient:</strong> Needed to stay healthy.","<strong>Fibre:</strong> Keeps intestines healthy.","<strong>Constipation:</strong> Blocked intestines due to lack of fibre.","<strong>Faeces:</strong> Solid waste material."]}, {title:"2. Food Labels 🏷️",points:["<strong>Purpose:</strong> Help healthy choices.","<strong>Shows:</strong> Nutrients and Energy.","<strong>Joule (J):</strong> Unit for energy."]}, {title:"3. Risks ⚠️",points:["<strong>Hazard:</strong> Cause of harm.","<strong>Risk:</strong> Chance of harm.","<strong>Independent Variable:</strong> Change.","<strong>Dependent Variable:</strong> Measure.","<strong>Control:</strong> Keep same."]}, {title:"4. Carbs 🍞",points:["<strong>Function:</strong> Energy source.","<strong>Sugar:</strong> Soluble, sweet.","<strong>Starch:</strong> Insoluble (Rice/Pasta)."]}, {title:"5. Fats 🧀",points:["<strong>Function:</strong> Store energy & warmth.","<strong>Sources:</strong> Butter, oils, eggs.","<strong>Caution:</strong> Too much = weight gain."]}, {title:"6. Proteins 🍗",points:["<strong>Function:</strong> Growth & Repair.","<strong>Sources:</strong> Meat, fish, beans.","<strong>Who needs it?</strong> Athletes & kids."]}, {title:"7. Vitamins 🥕",points:["<strong>Vit A:</strong> Eyes/Skin.","<strong>Vit C:</strong> Skin/Gums.","<strong>Vit D:</strong> Bones.","<strong>Calcium:</strong> Bones/Teeth.","<strong>Iron:</strong> Blood."]}, {title:"8. Balanced 🌈",points:["<strong>Def:</strong> Eating variety.","<strong>Why:</strong> No single food has it all."]}];
+const qaData=[{q:"1. List 3 nutrients.",a:"Proteins, Carbohydrates, Fats."},{q:"2. Why fibre?",a:"Not a nutrient, but stops constipation."},{q:"3. Example Carb?",a:"Starch (Bread) or Sugar (Sweets)."},{q:"4. Food Label Info?",a:"Shows Protein, Fat, Energy (kJ). Energy used for growing/moving."},{q:"5. Energy Source?",a:"Carbohydrates."},{q:"6. Active people?",a:"Need more energy (food) to move."},{q:"7. 500mg in g?",a:"0.5 g."},{q:"8. Daily Energy?",a:"8000-10000 kJ per day."},{q:"9. Carbs use?",a:"Energy."},{q:"10. Starch source?",a:"Rice, pasta, potatoes."},{q:"11. Too much sugar?",a:"Bad teeth & obesity."},{q:"12. Temp change?",a:"Rising temp = Energy release."},{q:"13. Fat source?",a:"Butter, oil, cheese."},{q:"14. Protein source?",a:"Meat, fish, eggs."},{q:"15. Plant protein?",a:"Beans, lentils, tofu."},{q:"16. Athletes?",a:"Protein for muscle repair."},{q:"17. Vitamin C?",a:"Citrus fruit. Healthy skin."},{q:"18. Calcium?",a:"Milk. Strong bones."},{q:"19. Starch vs Sugar?",a:"Eat more starch. Less sugar."},{q:"20. 8400 kJ?",a:"Fits normal daily needs."}];
+const quizData=[{term:"Diet",def:"What you normally eat and drink."},{term:"Nutrient",def:"A substance that an organism needs to stay healthy."},{term:"Carbohydrate",def:"A nutrient needed for energy."},{term:"Fats/Lipids",def:"Nutrients needed for stored energy and insulation."},{term:"Proteins",def:"Nutrients you need for growth and repair."},{term:"Vitamins",def:"Nutrients needed in small amounts for health."},{term:"Fibre",def:"Indigestible food that keeps intestines healthy."},{term:"Constipation",def:"Blocked intestines due to lack of fibre."},{term:"Joule (J)",def:"The unit used to measure energy."},{term:"Hazard",def:"Harm that something may cause."},{term:"Risk Assessment",def:"Identifying hazards and controlling them."},{term:"Independent Variable",def:"The variable you decide to change."},{term:"Dependent Variable",def:"The variable you decide to measure."},{term:"Control Variable",def:"The variable you keep the same."},{term:"Sugar",def:"Soluble carbohydrate found in sweet foods."},{term:"Starch",def:"Large, insoluble carbohydrate (rice/pasta)."},{term:"Vitamin A",def:"Keeps eyes and skin healthy (carrots)."},{term:"Vitamin C",def:"Keeps skin and gums healthy (citrus)."},{term:"Vitamin D",def:"Keeps bones and teeth strong."},{term:"Calcium",def:"Mineral used in bones and teeth."},{term:"Iron",def:"Mineral used in red blood cells."},{term:"Balanced Diet",def:"Eating different foods for correct nutrients."}];
+const shopItems=[{id:101,name:"Smart Owl",icon:"🦉",cost:3},{id:102,name:"Science Cat",icon:"🐱‍🔬",cost:8},{id:103,name:"Sparkle Uni",icon:"🦄",cost:12},{id:104,name:"Tiny Sprout",icon:"🌱",cost:15},{id:105,name:"Happy Earth",icon:"🌍",cost:20},{id:106,name:"Rocket",icon:"🚀",cost:25}];
+
+// --- STATE ---
+let completedItems=JSON.parse(localStorage.getItem('da_p'))||[];let gameScore=parseInt(localStorage.getItem('da_s'))||0;let inventory=JSON.parse(localStorage.getItem('da_i'))||[];let equippedItem=localStorage.getItem('da_e')||null;let currentQuestion=null;
+const audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+function playSound(t){if(audioCtx.state==='suspended')audioCtx.resume();const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.connect(g);g.connect(audioCtx.destination);if(t=='c'){o.type='triangle';o.frequency.value=523;g.gain.exponentialRampToValueAtTime(0.01,audioCtx.currentTime+0.5)}else if(t=='w'){o.type='sawtooth';o.frequency.value=150}else{o.type='sine';o.frequency.value=400;g.gain.exponentialRampToValueAtTime(0.01,audioCtx.currentTime+0.5)}o.start();o.stop(audioCtx.currentTime+0.5)}
+
+// --- LOGIC ---
+function switchTab(t){['checklist','game','shop','summary','qa'].forEach(v=>{document.getElementById(v+'-view').style.display='none';document.getElementById('tab-'+v).classList.remove('active')});document.getElementById(t+'-view').style.display='block';document.getElementById('tab-'+t).classList.add('active');if(t=='game')nextQuestion();if(t=='shop')renderShop();if(t=='checklist')updateCompanionPosition()}
+const listEl=document.getElementById('checklist'),progressBar=document.getElementById('progressBar'),modal=document.getElementById('mysteryModal');
+function renderChecklist(){listEl.innerHTML='';topics.forEach(t=>{const c=completedItems.includes(t.id);listEl.innerHTML+=`<li class="item ${c?'completed':''}" onclick="toggleItem(${t.id})"><div class="checkbox-custom">${c?'<i>✓</i>':''}</div><div class="content"><h3>${t.title}</h3><p>${t.desc}</p></div></li>`});const p=(completedItems.length/topics.length)*100;progressBar.style.width=`${p}%`;updateCompanionPosition(p);renderCompanion()}
+function updateCompanionPosition(p){if(typeof p==='undefined')p=(completedItems.length/topics.length)*100;const c=document.getElementById('activeCompanion');c.style.left=`calc(${Math.min(Math.max(p,0),95)}% - 20px)`;c.style.right='auto'}
+function renderCompanion(){const c=document.getElementById('activeCompanion');if(equippedItem){const i=shopItems.find(x=>x.id==equippedItem);if(i){c.innerText=i.icon;c.style.display='block'}}else{c.style.display='none'}}
+function toggleItem(id){if(completedItems.includes(id)){completedItems=completedItems.filter(x=>x!==id)}else{completedItems.push(id);playSound('c');fireConfetti();const t=topics.find(x=>x.id===id);document.getElementById('modalTitle').innerText=t.title;document.getElementById('modalText').innerText=t.mystery;modal.style.display='flex'}saveData();renderChecklist()}
+function nextQuestion(){document.getElementById('gameScoreDisplay').innerText=gameScore;document.getElementById('questionCard').classList.remove('correct-anim');const q=quizData[Math.floor(Math.random()*quizData.length)];currentQuestion=q;document.getElementById('questionText').innerText=q.def;let opts=[q];while(opts.length<3){const r=quizData[Math.floor(Math.random()*quizData.length)];if(!opts.includes(r))opts.push(r)}opts.sort(()=>Math.random()-0.5);const g=document.getElementById('optionsGrid');g.innerHTML='';opts.forEach(o=>{g.innerHTML+=`<button class="option-btn" onclick="checkAnswer(this,'${o.term}')">${o.term}</button>`})}
+function checkAnswer(el,term){if(term===currentQuestion.term){gameScore++;saveData();playSound('c');fireConfetti();el.style.background='#e6fffa';setTimeout(nextQuestion,1000)}else{playSound('w');el.classList.add('shake');setTimeout(()=>el.classList.remove('shake'),500)}}
+function renderShop(){document.getElementById('shopScoreDisplay').innerText=gameScore;const g=document.getElementById('shopGrid');g.innerHTML='';shopItems.forEach(i=>{const own=inventory.includes(i.id),eq=equippedItem==i.id;let btn=own?(eq?`<button class="btn-equip equipped">Equipped</button>`:`<button class="btn-equip" onclick="equip(${i.id})">Equip</button>`):`<button class="btn-buy" ${gameScore>=i.cost?'':'disabled'} onclick="buy(${i.id})">Buy</button>`;g.innerHTML+=`<div class="shop-item"><span class="shop-icon">${i.icon}</span><h4>${i.name}</h4><span class="shop-cost">${own?'Owned':i.cost+' 💎'}</span>${btn}</div>`})}
+function buy(id){const i=shopItems.find(x=>x.id===id);if(i&&gameScore>=i.cost){gameScore-=i.cost;inventory.push(id);saveData();renderShop()}}
+function equip(id){equippedItem=id;saveData();renderShop()}
+function renderRevision(){const g=document.getElementById('summaryGrid');g.innerHTML='';revisionData.forEach(c=>{g.innerHTML+=`<div class="summary-card"><h2>${c.title}</h2><ul class="summary-list">${c.points.map(p=>`<li>${p}</li>`).join('')}</ul></div>`})}
+function renderQA(){const l=document.getElementById('qaList');l.innerHTML='';qaData.forEach(i=>{l.innerHTML+=`<div class="qa-card"><div class="qa-header" onclick="this.parentElement.classList.toggle('open');const b=this.nextElementSibling;b.style.maxHeight=b.style.maxHeight?null:b.scrollHeight+'px'"><span>${i.q}</span><span>▼</span></div><div class="qa-body"><div class="qa-content">${i.a}</div></div></div>`})}
+function saveData(){localStorage.setItem('da_p',JSON.stringify(completedItems));localStorage.setItem('da_s',gameScore);localStorage.setItem('da_i',JSON.stringify(inventory));if(equippedItem)localStorage.setItem('da_e',equippedItem)}
+function confirmReset(){completedItems=[];gameScore=0;inventory=[];equippedItem=null;saveData();renderChecklist();document.getElementById('resetModal').style.display='none'}
+function showResetModal(){document.getElementById('resetModal').style.display='flex'}
+const canvas=document.getElementById("confetti-canvas"),ctx=canvas.getContext("2d");canvas.width=window.innerWidth;canvas.height=window.innerHeight;let particles=[];
+function fireConfetti(){for(let i=0;i<50;i++)particles.push({x:window.innerWidth/2,y:window.innerHeight/2,vx:(Math.random()-.5)*10,vy:(Math.random()-.5)*10-5,c:`hsl(${Math.random()*360},100%,50%)`,l:100});ani()}
+function ani(){if(!particles.length)return;ctx.clearRect(0,0,canvas.width,canvas.height);particles.forEach((p,i)=>{p.x+=p.vx;p.y+=p.vy;p.vy+=0.2;p.l--;ctx.fillStyle=p.c;ctx.beginPath();ctx.arc(p.x,p.y,5,0,6.28);ctx.fill();if(p.l<0)particles.splice(i,1)});requestAnimationFrame(ani)}
+window.onresize=()=>{canvas.width=window.innerWidth;canvas.height=window.innerHeight};
+renderChecklist();renderRevision();renderQA();
+</script>
+</body>
+</html>
+
